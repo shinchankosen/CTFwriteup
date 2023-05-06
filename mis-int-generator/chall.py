@@ -1,18 +1,11 @@
-import random
 
-k = 36
-maxlength = 16
-
-
-def f(x, cnt):
-    cnt += 1
-    r = 2**k
-    if x == 0 or x == r:
-        return -x, cnt
-    if x * x % r != 0:
-        return -x, cnt
+def f(x):
+    if x == 0 or x == 2**36:
+        return -x
+    if x * x % (2**36) != 0:
+        return -x
     else:
-        return -x * (x - r) // r, cnt
+        return -x * (x - (2**36)) // (2**36)
 
 
 def g(x):
@@ -34,7 +27,7 @@ def pad(x, cnt):
     if x < 0:
         minus = True
         x, cnt = g(-x)
-    sub = maxlength - digit(x)
+    sub = 16 - digit(x)
     ret = x
     for i in range(sub - digit(cnt)):
         ret *= 10
@@ -42,17 +35,20 @@ def pad(x, cnt):
             ret += pow(x % 10, x % 10 * i, 10)
         else:
             ret += pow(i % 10 - i % 2, i % 10 - i % 2 + 1, 10)
-    ret += cnt * 10 ** (maxlength - digit(cnt))
+    ret += cnt * 10 ** (16 - digit(cnt))
     return ret
 
 
 def int_generator(x):
     ret = -x
-    x_, cnt = f(x, 0)
+    x_ = f(x)
+    cnt = 1
     while x_ > 0:
         ret = x_
-        x_, cnt = f(x_, cnt)
+        x_ = f(x_)
+        cnt += 1
     return pad(ret, cnt)
+
 
 X = 1008844668800884
 for i in range(100000000):
@@ -61,7 +57,7 @@ for i in range(100000000):
         break
 
 X = 2264663430088446
-for i in range(7000000, 100000000):
+for i in range(100000000):
     if i % 10000 == 0:
         print(i)
         
