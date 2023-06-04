@@ -1,4 +1,4 @@
-# SECCON beginners
+# SECCON beginners 2023
 自分が解いた問題のWriteup
 
 ## crypro-Conquer
